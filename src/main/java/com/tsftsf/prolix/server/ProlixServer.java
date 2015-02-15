@@ -20,11 +20,14 @@ public class ProlixServer {
 
   private static JSONMapper jsonMapper = new JSONMapper();
 
+  private static RandomNumberPoolTimed randomNumberPoolTimed = RandomNumberPoolTimed.getInstance();
+
   private void run() {
 
     Spark.get("/randomNumberRun", (req, res) -> {
-      RandomNumberRun randomNumberRun = RandomNumberPoolTimed.getInstance().get();
-      return jsonMapper.toJSON(randomNumberRun);
+      res.type("text/json");
+      RandomNumberRun randomNumberRun = ProlixServer.randomNumberPoolTimed.getRandomNumberRun();
+      return ProlixServer.jsonMapper.toJSON(randomNumberRun);
     });
 
     Spark.get("/hello", (req, res) -> {
