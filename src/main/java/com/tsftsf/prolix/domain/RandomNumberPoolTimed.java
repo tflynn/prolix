@@ -16,9 +16,15 @@ public class RandomNumberPoolTimed {
 
   private static Integer randomRunRefreshIntervalSeconds = RandomConfiguration.getRandomRunRefreshIntervalSeconds();
 
-  private Instant previousInstant;
+  private static Integer randomRunSetRefreshIntervalSeconds = RandomConfiguration.getRandomRunSetRefreshIntervalSeconds();
+
+  private Instant randomNumberRunPreviousInstant;
+
   private RandomNumberRun currentRandomNumberRun;
 
+  private Instant randomNumberRunSetPreviousInstant;
+
+  private RandomNumberRunSet currentRandomNumberRunSet;
 
   private RandomNumberPoolTimed() {
   }
@@ -34,8 +40,8 @@ public class RandomNumberPoolTimed {
     if (currentRandomNumberRun == null) {
       currentRandomNumberRun = new RandomNumberRun();
     }
-    if (previousInstant == null) {
-      previousInstant = Instant.now();
+    if (randomNumberRunPreviousInstant == null) {
+      randomNumberRunPreviousInstant = Instant.now();
     }
     Instant currentInstant = Instant.now();
     // If a second has elapsed since the last time a run was generated
@@ -45,11 +51,35 @@ public class RandomNumberPoolTimed {
 //        currentInstant.getEpochSecond(),
 //        previousInstant.getEpochSecond()));
 
-    if ((currentInstant.getEpochSecond() - previousInstant.getEpochSecond()) > randomRunRefreshIntervalSeconds) {
+    if ((currentInstant.getEpochSecond() - randomNumberRunPreviousInstant.getEpochSecond()) > randomRunRefreshIntervalSeconds) {
 //      System.out.println("Getting new RandomNumberRun");
       currentRandomNumberRun = new RandomNumberRun();
-      previousInstant = currentInstant;
+      randomNumberRunPreviousInstant = currentInstant;
     }
     return currentRandomNumberRun;
   }
+
+  public RandomNumberRunSet getRandomNumberRunSet() {
+    if (currentRandomNumberRunSet == null) {
+      currentRandomNumberRunSet = new RandomNumberRunSet();
+    }
+    if (randomNumberRunSetPreviousInstant == null) {
+      randomNumberRunSetPreviousInstant = Instant.now();
+    }
+    Instant currentInstant = Instant.now();
+    // If a second has elapsed since the last time a run was generated
+
+//    System.out.println(String.format("Difference %d Current instant %d Previous instant %d",
+//        (currentInstant.getEpochSecond() - previousInstant.getEpochSecond()),
+//        currentInstant.getEpochSecond(),
+//        previousInstant.getEpochSecond()));
+
+    if ((currentInstant.getEpochSecond() - randomNumberRunSetPreviousInstant.getEpochSecond()) > randomRunSetRefreshIntervalSeconds) {
+//      System.out.println("Getting new RandomNumberRun");
+      currentRandomNumberRunSet = new RandomNumberRunSet();
+      randomNumberRunSetPreviousInstant = currentInstant;
+    }
+    return currentRandomNumberRunSet;
+  }
+
 }

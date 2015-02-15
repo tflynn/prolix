@@ -3,6 +3,7 @@ package com.tsftsf.prolix.server;
 import com.tsftsf.prolix.domain.ProtocolElement;
 import com.tsftsf.prolix.domain.RandomNumberPoolTimed;
 import com.tsftsf.prolix.domain.RandomNumberRun;
+import com.tsftsf.prolix.domain.RandomNumberRunSet;
 import com.tsftsf.prolix.mapper.JSONMapper;
 
 import java.util.ArrayList;
@@ -30,9 +31,10 @@ public class ProlixServer {
       return ProlixServer.jsonMapper.toJSON(randomNumberRun);
     });
 
-    Spark.get("/hello", (req, res) -> {
-      return "hello world z";
-      //return prolixServer.hello();
+    Spark.get("/randomNumberRunSet", (req, res) -> {
+      res.type("text/json");
+      RandomNumberRunSet randomNumberRunSet = ProlixServer.randomNumberPoolTimed.getRandomNumberRunSet();
+      return ProlixServer.jsonMapper.toJSON(randomNumberRunSet);
     });
 
   }
@@ -42,15 +44,5 @@ public class ProlixServer {
 
   }
 
-   public String hello() {
-     JSONMapper mapper = new JSONMapper();
-     List<Long> payload = new ArrayList<Long>();
-     payload.add(1L);
-     payload.add(2L);
-     ProtocolElement pe = new ProtocolElement("v1","command",payload);
-     String expectedJsonString = "{\"version\":\"v1\",\"command\":\"command\",\"payload\":[1,2]}";
-     String serializedJsonString = mapper.toJSON(pe);
 
-     return serializedJsonString;
-  }
 }
