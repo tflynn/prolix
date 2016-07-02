@@ -1,4 +1,4 @@
-package com.tsftsf.prolix;
+package com.tsftsf.prolix.domain;
 
 import com.tsftsf.prolix.domain.RandomNumberRun;
 import org.junit.Test;

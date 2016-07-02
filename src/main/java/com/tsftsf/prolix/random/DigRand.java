@@ -1,4 +1,4 @@
-package com.tsftsf.profilx.random;
+package com.tsftsf.prolix.random;
 
 import net.nullschool.util.DigitalRandom;
 
@@ -13,6 +13,10 @@ public class DigRand {
     if (digitalRandom == null) {
       this.digitalRandom = new DigitalRandom();
     }
+  }
+
+  public DigRand(Long seed) {
+
   }
 
   /**
@@ -32,4 +36,19 @@ public class DigRand {
   public long nextPositiveLong() {
     return this.digitalRandom.nextLong(Long.MAX_VALUE);
   }
+
+  /**
+   * Get the next random double
+   *
+   * @return double value
+   */
+  public double nextPositiveDouble() { return this.digitalRandom.nextDouble(0.0, Double.MAX_VALUE); }
+
+
+  /**
+   * Get the next double value as a probability between 0.0 (inc) and 1.0 (exclusive)
+   *
+   * @return double value
+   */
+  public double nextDoubleAsProbability() {return this.digitalRandom.nextDouble(0.0, 1.0); }
 }

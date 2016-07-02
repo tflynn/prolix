@@ -1,4 +1,4 @@
-package com.tsftsf.prolix;
+package com.tsftsf.prolix.mapper;
 
 import com.tsftsf.prolix.domain.ProtocolElement;
 import com.tsftsf.prolix.domain.ProtocolElementList;

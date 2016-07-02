@@ -1,8 +1,7 @@
 package com.tsftsf.prolix.domain;
 
-import com.tsftsf.profilx.random.DigRand;
+import com.tsftsf.prolix.random.DigRand;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
