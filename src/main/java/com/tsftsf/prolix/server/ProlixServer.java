@@ -1,15 +1,10 @@
 package com.tsftsf.prolix.server;
 
-import com.tsftsf.prolix.domain.ProtocolElement;
 import com.tsftsf.prolix.domain.RandomNumberPoolTimed;
 import com.tsftsf.prolix.domain.RandomNumberRun;
 import com.tsftsf.prolix.domain.RandomNumberRunSet;
 import com.tsftsf.prolix.mapper.JSONMapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
-//import spark.Spark;
 import spark.Spark;
 
 /**
@@ -17,32 +12,52 @@ import spark.Spark;
  */
 public class ProlixServer {
 
-  private static ProlixServer prolixServer = new ProlixServer();
+    public static ProlixServer prolixServer = new ProlixServer();
 
-  private static JSONMapper jsonMapper = new JSONMapper();
+    private static JSONMapper jsonMapper = new JSONMapper();
 
-  private static RandomNumberPoolTimed randomNumberPoolTimed = RandomNumberPoolTimed.getInstance();
+    private static RandomNumberPoolTimed randomNumberPoolTimed = RandomNumberPoolTimed.getInstance();
 
-  private void run() {
+    private Integer port = 4567;
 
-    Spark.get("/randomNumberRun", (req, res) -> {
-      res.type("text/json");
-      RandomNumberRun randomNumberRun = ProlixServer.randomNumberPoolTimed.getRandomNumberRun();
-      return ProlixServer.jsonMapper.toJSON(randomNumberRun);
-    });
+    public Integer getPort() {
+        return port;
+    }
 
-    Spark.get("/randomNumberRunSet", (req, res) -> {
-      res.type("text/json");
-      RandomNumberRunSet randomNumberRunSet = ProlixServer.randomNumberPoolTimed.getRandomNumberRunSet();
-      return ProlixServer.jsonMapper.toJSON(randomNumberRunSet);
-    });
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 
-  }
-  public static void main(String[] args) {
+    public void run() {
 
-    ProlixServer.prolixServer.run();
+        Spark.port(port);
 
-  }
+        Spark.get("/randomNumberRun", (req, res) -> {
+            res.type("text/json");
+            RandomNumberRun randomNumberRun = ProlixServer.randomNumberPoolTimed.getRandomNumberRun();
+            return ProlixServer.jsonMapper.toJSON(randomNumberRun);
+        });
+
+        Spark.get("/randomNumberRunSet", (req, res) -> {
+            res.type("text/json");
+            RandomNumberRunSet randomNumberRunSet = ProlixServer.randomNumberPoolTimed.getRandomNumberRunSet();
+            return ProlixServer.jsonMapper.toJSON(randomNumberRunSet);
+        });
+
+    }
+
+    public static void main(String[] args) {
+
+        ProlixServer currentServer = ProlixServer.prolixServer;
+
+        //TODO Proper command-line parsing
+        if (args.length == 1) {
+            currentServer.setPort(Integer.valueOf(args[0]));
+        }
+
+        currentServer.run();
+
+    }
 
 
 }

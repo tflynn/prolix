@@ -12,43 +12,86 @@ import java.util.concurrent.ConcurrentMap;
 public class LetterFrequencies {
 
     /*
+        Use a String with a single character to represent a single character to allow any legal Unicode "character"
+        See discussion in https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html
+     */
+
+    /*
         Table of relative frequencies of characters in US English. Case is ignored
      */
-    private static Map<Character, Double> LANGUAGE_LETTER_FREQUENCIES_ENGLISH_RELATIVE =
+    private static Map<String, Double> LANGUAGE_LETTER_FREQUENCIES_ENGLISH_RELATIVE =
             Collections.unmodifiableMap(Stream.of(
-                    new AbstractMap.SimpleEntry<>('a', 8.167),
-                    new AbstractMap.SimpleEntry<>('b', 1.492),
-                    new AbstractMap.SimpleEntry<>('c', 2.782),
-                    new AbstractMap.SimpleEntry<>('d', 1.492),
-                    new AbstractMap.SimpleEntry<>('e', 4.253),
-                    new AbstractMap.SimpleEntry<>('f', 1.492),
-                    new AbstractMap.SimpleEntry<>('g', 2.015),
-                    new AbstractMap.SimpleEntry<>('h', 6.094),
-                    new AbstractMap.SimpleEntry<>('i', 6.966),
-                    new AbstractMap.SimpleEntry<>('j', 0.153),
-                    new AbstractMap.SimpleEntry<>('k', 0.772),
-                    new AbstractMap.SimpleEntry<>('l', 4.025),
-                    new AbstractMap.SimpleEntry<>('m', 2.406),
-                    new AbstractMap.SimpleEntry<>('n', 6.749),
-                    new AbstractMap.SimpleEntry<>('o', 7.507),
-                    new AbstractMap.SimpleEntry<>('p', 1.929),
-                    new AbstractMap.SimpleEntry<>('q', 0.095),
-                    new AbstractMap.SimpleEntry<>('r', 5.987),
-                    new AbstractMap.SimpleEntry<>('s', 6.327),
-                    new AbstractMap.SimpleEntry<>('t', 9.056),
-                    new AbstractMap.SimpleEntry<>('u', 2.758),
-                    new AbstractMap.SimpleEntry<>('v', 0.978),
-                    new AbstractMap.SimpleEntry<>('w', 2.361),
-                    new AbstractMap.SimpleEntry<>('x', 0.150),
-                    new AbstractMap.SimpleEntry<>('y', 1.974),
-                    new AbstractMap.SimpleEntry<>('z', 0.074)
-                    )
-                    .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())));
+                    new AbstractMap.SimpleEntry<>("0", 0.000091),
+                    new AbstractMap.SimpleEntry<>("1", 0.000254),
+                    new AbstractMap.SimpleEntry<>("2", 0.000048),
+                    new AbstractMap.SimpleEntry<>("3", 0.000082),
+                    new AbstractMap.SimpleEntry<>("4", 0.000060),
+                    new AbstractMap.SimpleEntry<>("5", 0.000060),
+                    new AbstractMap.SimpleEntry<>("6", 0.000051),
+                    new AbstractMap.SimpleEntry<>("7", 0.000067),
+                    new AbstractMap.SimpleEntry<>("8", 0.000054),
+                    new AbstractMap.SimpleEntry<>("9", 0.000039),
+                    new AbstractMap.SimpleEntry<>("A", 0.001969),
+                    new AbstractMap.SimpleEntry<>("B", 0.001080),
+                    new AbstractMap.SimpleEntry<>("C", 0.001443),
+                    new AbstractMap.SimpleEntry<>("D", 0.000974),
+                    new AbstractMap.SimpleEntry<>("E", 0.000947),
+                    new AbstractMap.SimpleEntry<>("F", 0.000405),
+                    new AbstractMap.SimpleEntry<>("G", 0.000442),
+                    new AbstractMap.SimpleEntry<>("H", 0.001894),
+                    new AbstractMap.SimpleEntry<>("I", 0.007953),
+                    new AbstractMap.SimpleEntry<>("J", 0.000783),
+                    new AbstractMap.SimpleEntry<>("K", 0.000036),
+                    new AbstractMap.SimpleEntry<>("L", 0.000699),
+                    new AbstractMap.SimpleEntry<>("M", 0.002538),
+                    new AbstractMap.SimpleEntry<>("N", 0.001089),
+                    new AbstractMap.SimpleEntry<>("O", 0.000750),
+                    new AbstractMap.SimpleEntry<>("P", 0.001900),
+                    new AbstractMap.SimpleEntry<>("Q", 0.000039),
+                    new AbstractMap.SimpleEntry<>("R", 0.000393),
+                    new AbstractMap.SimpleEntry<>("S", 0.001612),
+                    new AbstractMap.SimpleEntry<>("T", 0.002541),
+                    new AbstractMap.SimpleEntry<>("U", 0.000188),
+                    new AbstractMap.SimpleEntry<>("V", 0.000097),
+                    new AbstractMap.SimpleEntry<>("W", 0.001603),
+                    new AbstractMap.SimpleEntry<>("X", 0.000030),
+                    new AbstractMap.SimpleEntry<>("Y", 0.001270),
+                    new AbstractMap.SimpleEntry<>("Z", 0.000017),
+                    new AbstractMap.SimpleEntry<>("a", 0.057670),
+                    new AbstractMap.SimpleEntry<>("b", 0.009913),
+                    new AbstractMap.SimpleEntry<>("c", 0.018304),
+                    new AbstractMap.SimpleEntry<>("d", 0.034127),
+                    new AbstractMap.SimpleEntry<>("e", 0.094856),
+                    new AbstractMap.SimpleEntry<>("f", 0.014967),
+                    new AbstractMap.SimpleEntry<>("g", 0.014220),
+                    new AbstractMap.SimpleEntry<>("h", 0.044790),
+                    new AbstractMap.SimpleEntry<>("i", 0.049482),
+                    new AbstractMap.SimpleEntry<>("j", 0.000790),
+                    new AbstractMap.SimpleEntry<>("k", 0.006298),
+                    new AbstractMap.SimpleEntry<>("l", 0.030476),
+                    new AbstractMap.SimpleEntry<>("m", 0.018122),
+                    new AbstractMap.SimpleEntry<>("n", 0.050907),
+                    new AbstractMap.SimpleEntry<>("o", 0.061297),
+                    new AbstractMap.SimpleEntry<>("p", 0.013077),
+                    new AbstractMap.SimpleEntry<>("q", 0.001059),
+                    new AbstractMap.SimpleEntry<>("r", 0.045459),
+                    new AbstractMap.SimpleEntry<>("s", 0.047153),
+                    new AbstractMap.SimpleEntry<>("t", 0.069731),
+                    new AbstractMap.SimpleEntry<>("u", 0.023507),
+                    new AbstractMap.SimpleEntry<>("v", 0.007559),
+                    new AbstractMap.SimpleEntry<>("w", 0.017055),
+                    new AbstractMap.SimpleEntry<>("x", 0.001364),
+                    new AbstractMap.SimpleEntry<>("y", 0.017387),
+                    new AbstractMap.SimpleEntry<>("z", 0.000327),
+                    new AbstractMap.SimpleEntry<>(" ", 0.054145),
+                    new AbstractMap.SimpleEntry<>(",", 0.004459),
+                    new AbstractMap.SimpleEntry<>(".", 0.005096)
+                    ).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())));
 
     /*
      Map of <language, relative character frequencies> for available
      */
-    private static Map<String, Map<Character, Double>> LANGUAGE_LETTER_FREQUENCIES_RELATIVE =
+    private static Map<String, Map<String, Double>> LANGUAGE_LETTER_FREQUENCIES_RELATIVE =
             Collections.unmodifiableMap(Stream.of(
                     new AbstractMap.SimpleEntry<>("en_US", LANGUAGE_LETTER_FREQUENCIES_ENGLISH_RELATIVE))
                     .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())));
@@ -56,7 +99,7 @@ public class LetterFrequencies {
     /*
      Get the cumulative distribution function for characters in the default character encoding language
      */
-    private static TreeMap<Double, Character> getCharacterCDF() {
+    private static TreeMap<Double, String> getCharacterCDF() {
         String charsetEncoding = Encodings.defaultCharsetEncoding;
         return getCharacterCDF(charsetEncoding);
     }
@@ -64,7 +107,7 @@ public class LetterFrequencies {
     /*
      Cumulative distribution function for characters for the current language
      */
-    private static Map<String, TreeMap<Double, Character>> languageCharacterCDF =
+    private static Map<String, TreeMap<Double, String>> languageCharacterCDF =
             new HashMap<>();
 
     /**
@@ -74,30 +117,37 @@ public class LetterFrequencies {
      * @return a Treemap of [cum probability, character] for the specified language
      * @throws IllegalArgumentException if the language is not supported (has no character frequency table)
      */
-    public static TreeMap<Double, Character> getCharacterCDF(String language) {
-        if (! languageCharacterCDF.containsKey(language)) {
-            double sum = 0.0;
-            double partialSum = 0.0;
-            TreeMap<Double, Character> charCDF = new TreeMap<>();
+    public static TreeMap<Double, String> getCharacterCDF(String language) {
+        if (!languageCharacterCDF.containsKey(language)) {
+            TreeMap<Double, String> charCDF = new TreeMap<>();
             // Calculate sum of relative densities
             // Deal with missing map
-            if ( ! LANGUAGE_LETTER_FREQUENCIES_RELATIVE.containsKey(language)) {
+            if (!LANGUAGE_LETTER_FREQUENCIES_RELATIVE.containsKey(language)) {
                 throw new IllegalArgumentException(
                         String.format("Language %s has no letter frequencies defined", language));
             }
-            Map<Character, Double> languageLetterFrequenciesRelative =
+            Map<String, Double> languageLetterFrequenciesRelative =
                     LANGUAGE_LETTER_FREQUENCIES_RELATIVE.get(language);
 
+            double sum = 0.0;
             // Calculate the total of all letter frequencies
-            for(Map.Entry<Character, Double> entry : languageLetterFrequenciesRelative.entrySet()) {
+            for (Map.Entry<String, Double> entry : languageLetterFrequenciesRelative.entrySet()) {
                 sum += entry.getValue();
             }
-            // Normalize all entry values to a cumulative value between 0.0 and 1.0
-            for(Map.Entry<Character, Double> entry : languageLetterFrequenciesRelative.entrySet()) {
-                charCDF.put(partialSum / sum, entry.getKey());
-                partialSum += entry.getValue(); // cumulative probability
+
+            // Normalize and order all entry values based on relative frequency
+            TreeMap<Double,String> orderedRelativeFrequencies = new TreeMap<>();
+            for (Map.Entry<String, Double> entry : languageLetterFrequenciesRelative.entrySet()) {
+                orderedRelativeFrequencies.put(entry.getValue() / sum, entry.getKey());
             }
-            languageCharacterCDF.put(language,charCDF);
+
+            double partialSum = 0.0;
+            //Generate cumulative frequencies between 0.0 and 1.0
+            for (Map.Entry<Double, String> entry : orderedRelativeFrequencies.entrySet()) {
+                charCDF.put(partialSum / sum, entry.getValue());
+                partialSum += entry.getKey(); // cumulative probability
+            }
+            languageCharacterCDF.put(language, charCDF);
         }
         return languageCharacterCDF.get(language);
     }
@@ -105,12 +155,12 @@ public class LetterFrequencies {
     /**
      * Get a random character respecting character frequencies for the specified language
      *
-     * @param random a random double between 0.0 and 1.0
+     * @param random   a random double between 0.0 and 1.0
      * @param language Standard language code
      * @return Random character
      * @throws IllegalArgumentException if the language is not supported (has no character frequency table)
      */
-    public static Character getWeightedRandomCharacter(Double random, String language) {
+    public static String getWeightedRandomCharacter(Double random, String language) {
         return getCharacterCDF(language).higherEntry(random).getValue();
     }
 
@@ -121,7 +171,7 @@ public class LetterFrequencies {
      * @return Random character
      * @throws IllegalArgumentException if the language is not supported (has no character frequency table)
      */
-    public static Character getWeightedRandomCharacter(Double random) {
+    public static String getWeightedRandomCharacter(Double random) {
         String charsetEncoding = Encodings.defaultCharsetEncoding;
         return getWeightedRandomCharacter(random, charsetEncoding);
     }

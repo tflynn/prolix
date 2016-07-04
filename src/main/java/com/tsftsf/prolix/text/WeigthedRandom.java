@@ -17,7 +17,7 @@ public class WeigthedRandom {
      * @param random a random value between 0.0 and 1.0
      * @return a random character respecting relative character frequencies
      */
-    public static Character getWeightedRandomCharacter(Double random) {
+    public static String getWeightedRandomCharacter(Double random) {
         return getWeightedRandomCharacter(random, Encodings.defaultLocaleLanguage);
     }
 
@@ -28,7 +28,7 @@ public class WeigthedRandom {
      * @param language Language code - e.g. 'en-US'
      * @return a random character respecting relative character frequencies
      */
-    public static Character getWeightedRandomCharacter(Double random, String language) {
+    public static String getWeightedRandomCharacter(Double random, String language) {
         // Allow for case when the random value runs off the end of the CDF function
         // i.e. key is greater than highest value in CDF
         // In that case use the next lower key
